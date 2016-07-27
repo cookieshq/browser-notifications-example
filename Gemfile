@@ -4,6 +4,7 @@ ruby "2.3.1"
 
 gem "autoprefixer-rails"
 gem "bootstrap-sass", "~> 3.3.6"
+gem "coffee-rails"
 gem "flutie"
 gem "jquery-rails"
 gem "pg"
