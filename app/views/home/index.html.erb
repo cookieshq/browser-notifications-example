@@ -1,9 +1,14 @@
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>Browser notifications example</h1>
-    <br>
+    <% if @account.present? %>
+      <h4>Your pin is:</h4>
+      <h1><%= @account.pin %></h1>
+    <% else %>
+      <h1>Browser notifications example</h1>
+      <br>
 
-    <%= link_to "Generate account", "#", class: "btn btn-primary btn-lg" %>
-    <%= link_to "Connect to account", "#", class: "btn btn-default btn-lg" %>
+      <%= link_to "Generate account", accounts_path, method: :post, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Connect to account", "#", class: "btn btn-default btn-lg" %>
+    <% end %>
   </div>
 </div>
