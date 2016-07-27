@@ -5,6 +5,8 @@ RSpec.describe AccountsController, type: :controller do
     subject { post :create }
 
     context "saving succeeds" do
+      it { should redirect_to(root_path) }
+
       it "creates a new account" do
         expect {
           subject
@@ -29,6 +31,8 @@ RSpec.describe AccountsController, type: :controller do
         account = instance_double("Account", save: false)
         allow(Account).to receive(:new).and_return(account)
       end
+
+      it { should redirect_to(root_path) }
 
       it "doesn't create a new account" do
         expect {
