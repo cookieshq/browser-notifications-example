@@ -11,7 +11,7 @@
       <h1>Browser notifications example</h1>
       <br>
 
-      <%= link_to "Generate account", accounts_path, method: :post, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Generate account", accounts_path, method: :post, class: "btn btn-primary btn-lg", data: { disable_with: "Generating..." } %>
       <%= link_to "Connect to account", new_connection_path, class: "btn btn-default btn-lg" %>
     <% end %>
   </div>
