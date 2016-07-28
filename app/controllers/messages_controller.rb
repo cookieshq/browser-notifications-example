@@ -1,6 +1,10 @@
 class MessagesController < ApplicationController
   before_action :assign_and_authenticate_account
 
+  def show
+    @message = @account.messages.find(params[:id])
+  end
+
   def create
     @message = @account.messages.build(message_params)
     @message.save

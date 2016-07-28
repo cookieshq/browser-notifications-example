@@ -1,0 +1,12 @@
+<div class="container">
+  <div>
+    <%= link_to "Back", root_path %>
+  </div>
+
+  <h1><%= @message.title %></h1>
+  <h2 class="h4"><small><%= l @message.created_at %></small></h2>
+
+  <blockquote>
+    <%= simple_format @message.body %>
+  </blockquote>
+</div>
