@@ -14,4 +14,21 @@ class HomeController < ApplicationController
 
     render json: manifest_hash
   end
+
+  def service_worker
+    filename = Rails.application.assets_manifest.assets["service-worker.js"]
+
+    send_file filename, disposition: "inline"
+  end
+
+  private
+
+  def send_file_headers!(options)
+    super
+
+    headers["Cache-Control"] = "private, max-age=0, no-cache"
+
+    headers.delete("Content-Disposition")
+    headers.delete("Content-Transfer-Encoding")
+  end
 end

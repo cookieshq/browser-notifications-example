@@ -6,5 +6,9 @@ Rails.application.routes.draw do
 
   get "manifest" => "home#manifest", constraints: { format: :json }
 
+  if Rails.env.production?
+    get "/service-worker" => "home#service_worker", constraints: { format: :js }
+  end
+
   root to: "home#index"
 end

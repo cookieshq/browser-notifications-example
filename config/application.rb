@@ -24,8 +24,10 @@ module BrowserNotificationsExample
 
     config.assets.precompile << "service-worker.js"
 
-    config.serviceworker.routes.draw do
-      match "/service-worker.js"
+    unless Rails.env.production?
+      config.serviceworker.routes.draw do
+        match "/service-worker.js"
+      end
     end
   end
 end
