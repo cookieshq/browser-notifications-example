@@ -36,6 +36,7 @@ saveSubscription = (subscription) ->
     dataType: "json"
     data: JSON.stringify(device: deviceData)
   .then(console.log.bind console)
+  .then(refreshDeviceList)
   .fail(console.warn.bind console)
 
 deleteSubscription = (subscription) ->
@@ -47,6 +48,7 @@ deleteSubscription = (subscription) ->
     contentType: "application/json"
     dataType: "json"
   .then(console.log.bind console)
+  .then(refreshDeviceList)
   .fail(console.warn.bind console)
 
 enableNotificationBtn = ->
@@ -61,6 +63,9 @@ disablePush = (maintainState = false) ->
 
   unless maintainState
     App.isPushEnabled = false
+
+refreshDeviceList = ->
+  $("#devices-iframe").get(0)?.contentDocument?.location?.reload(true)
 
 setupServiceWorker = (registration) ->
   console.log(registration)

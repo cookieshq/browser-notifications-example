@@ -1,6 +1,10 @@
 class DevicesController < ApplicationController
   before_action :assign_and_authenticate_account
 
+  def index
+    @devices = @account.devices.order(:created_at)
+  end
+
   def create
     existing_device = @account.devices.find_by(endpoint: device_params[:endpoint])
 

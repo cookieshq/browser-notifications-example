@@ -1,0 +1,16 @@
+<h2 class="h3">Connected devices</h2>
+
+<% if @account.devices.any? %>
+  <ul>
+    <% @account.devices.each do |device| %>
+      <li>
+        <%= device.ua_device.unknown? ? "Browser" : device.ua_device.name %>:
+        <%= device.ua_name %> <%= device.ua_version %>
+        on
+        <%= device.ua_platform.name %> <%= device.ua_platform.version %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No devices connected yet</p>
+<% end %>
