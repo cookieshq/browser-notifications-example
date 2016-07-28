@@ -3,6 +3,8 @@
     <% if @account.present? %>
       <h4>Your pin is:</h4>
       <h1><%= @account.pin %></h1>
+
+      <button type="button" class="btn btn-primary js-notifications-btn" disabled>Enable notifications</button>
     <% else %>
       <h1>Browser notifications example</h1>
       <br>
