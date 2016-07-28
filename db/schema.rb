@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728092328) do
+ActiveRecord::Schema.define(version: 20160728135241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,5 +34,15 @@ ActiveRecord::Schema.define(version: 20160728092328) do
     t.index ["endpoint"], name: "index_devices_on_endpoint", unique: true, using: :btree
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_messages_on_account_id", using: :btree
+  end
+
   add_foreign_key "devices", "accounts"
+  add_foreign_key "messages", "accounts"
 end

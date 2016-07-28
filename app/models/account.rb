@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   has_many :devices
+  has_many :messages
 
   before_create :generate_pin, unless: :pin?
 

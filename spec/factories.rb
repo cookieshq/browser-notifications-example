@@ -9,4 +9,10 @@ FactoryGirl.define do
     p256dh { "test_#{SecureRandom.urlsafe_base64 66}" }
     auth { "test_#{SecureRandom.urlsafe_base64 16}" }
   end
+
+  factory :message do
+    account
+    title "Test message title"
+    body "Test message body"
+  end
 end
