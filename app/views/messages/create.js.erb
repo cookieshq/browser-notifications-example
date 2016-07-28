@@ -3,7 +3,7 @@
 $("#new_message").replaceWith("<%= j render 'form', message: message %>");
 
 <% if @message.persisted? %>
-  $(".js-flash").remove();
-  $("<div/>").addClass("alert alert-info js-flash").text("Message sent!").prependTo("body");
+  $(".flash").remove();
+  $("<div/>").addClass("alert alert-info flash").text("Message sent!").prependTo("body");
   $("html, body").animate({ scrollTop: 0 });
 <% end %>
