@@ -1,5 +1,5 @@
 class DevicesController < ApplicationController
-  before_action :assign_account
+  before_action :assign_and_authenticate_account
 
   def create
     existing_device = @account.devices.find_by(endpoint: device_params[:endpoint])
@@ -21,17 +21,5 @@ class DevicesController < ApplicationController
 
   def device_params
     params.require(:device).permit(:endpoint, :p256dh, :auth)
-  end
-
-  def assign_account
-    if cookies[:account_pin].blank?
-      render json: { errors: { base: "You need to be connected to an account" } }, status: :forbidden and return
-    end
-
-    @account = Account.find_by(pin: cookies[:account_pin])
-
-    unless @account
-      render json: { errors: { base: "Account not found" } }, status: :not_found and return
-    end
   end
 end

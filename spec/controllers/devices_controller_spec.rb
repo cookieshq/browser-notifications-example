@@ -4,7 +4,7 @@ RSpec.describe DevicesController, type: :controller do
   describe "POST #create" do
     let(:device_attributes) { attributes_for(:device).slice(:endpoint, :p256dh, :auth) }
 
-    subject { post :create, params: { device: device_attributes } }
+    subject { post :create, params: { device: device_attributes, format: :json } }
 
     context "with account cookied" do
       let(:account) { create(:account) }
