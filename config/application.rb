@@ -19,6 +19,9 @@ module BrowserNotificationsExample
 
     config.action_controller.action_on_unpermitted_parameters = :raise
 
+    # Ensure trailing slash to provide service worker scopes at path roots
+    config.action_controller.default_url_options = { trailing_slash: true }
+
     config.assets.precompile << "service-worker.js"
 
     config.serviceworker.routes.draw do
