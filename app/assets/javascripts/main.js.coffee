@@ -42,8 +42,8 @@ enableNotificationBtn = ->
   $(".js-notifications-btn").prop("disabled", false)
 
 enablePush = ->
-  $(".js-notifications-btn").text("Disable notifications")
-  isPushEnabled = true
+  $(".js-notifications-btn").text("Disable notifications on this device")
+  App.isPushEnabled = true
 
 setupServiceWorker = (registration) ->
   console.log(registration)
@@ -54,7 +54,34 @@ setupServiceWorker = (registration) ->
     .then(processSubscription)
     .catch(console.error.bind console, "Error checking subscription")
 
-isPushEnabled = false
+subscribe = ->
+  navigator.serviceWorker.ready.then (serviceWorkerRegistration) ->
+    serviceWorkerRegistration.pushManager.subscribe(userVisibleOnly: true)
+    .then (subscription) ->
+      enableNotificationBtn()
+      enablePush()
+
+      saveSubscription(subscription)
+
+    .catch (error) ->
+      if Notification?.permission is "denied"
+        console.warn("Permission for Notifications was denied")
+      else
+        console.error("Unable to subscribe to push", error)
+        enableNotificationBtn()
+
+unsubscribe = ->
+  # TODO
+  console.log "unsubscribe"
+
+App =
+  isPushEnabled: false
+
+$ ->
+  $(".js-notifications-btn").on "click", (event) ->
+    $(event.target).prop("disabled", true)
+
+    if App.isPushEnabled then unsubscribe() else subscribe()
 
 
 if "serviceWorker" of navigator
