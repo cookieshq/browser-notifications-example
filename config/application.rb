@@ -19,6 +19,8 @@ module BrowserNotificationsExample
 
     config.action_controller.action_on_unpermitted_parameters = :raise
 
+    config.assets.precompile << "service-worker.js"
+
     config.serviceworker.routes.draw do
       match "/service-worker.js"
     end
