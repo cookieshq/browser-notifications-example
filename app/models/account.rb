@@ -1,6 +1,6 @@
-# require 'active_support/core_ext/securerandom'
-
 class Account < ApplicationRecord
+  has_many :devices
+
   before_create :generate_pin, unless: :pin?
 
   private

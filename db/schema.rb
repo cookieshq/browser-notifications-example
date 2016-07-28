@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727104108) do
+ActiveRecord::Schema.define(version: 20160728092328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,4 +22,17 @@ ActiveRecord::Schema.define(version: 20160727104108) do
     t.index ["pin"], name: "index_accounts_on_pin", unique: true, using: :btree
   end
 
+  create_table "devices", force: :cascade do |t|
+    t.integer  "account_id"
+    t.string   "user_agent"
+    t.string   "endpoint",   null: false
+    t.string   "p256dh"
+    t.string   "auth"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_devices_on_account_id", using: :btree
+    t.index ["endpoint"], name: "index_devices_on_endpoint", unique: true, using: :btree
+  end
+
+  add_foreign_key "devices", "accounts"
 end

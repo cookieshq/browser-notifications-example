@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Account, type: :model do
+  it { should have_many(:devices) }
+
   describe ".generate_pin" do
     it "sets 5-digit PIN" do
       account = create(:account)
