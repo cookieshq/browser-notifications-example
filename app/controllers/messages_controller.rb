@@ -7,7 +7,8 @@ class MessagesController < ApplicationController
 
   def create
     @message = @account.messages.build(message_params)
-    @message.save
+
+    Notifier.new(@message).notify_all_devices if @message.save
 
     respond_to do |format|
       format.js { render :create }
