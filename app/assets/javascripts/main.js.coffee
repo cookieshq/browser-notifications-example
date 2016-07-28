@@ -38,12 +38,29 @@ saveSubscription = (subscription) ->
   .then(console.log.bind console)
   .fail(console.warn.bind console)
 
+deleteSubscription = (subscription) ->
+  endpoint = subscription.toJSON().endpoint
+
+  $.ajax
+    url: "/devices/#{btoa endpoint}"
+    method: "DELETE"
+    contentType: "application/json"
+    dataType: "json"
+  .then(console.log.bind console)
+  .fail(console.warn.bind console)
+
 enableNotificationBtn = ->
   $(".js-notifications-btn").prop("disabled", false)
 
 enablePush = ->
   $(".js-notifications-btn").text("Disable notifications on this device")
   App.isPushEnabled = true
+
+disablePush = (maintainState = false) ->
+  $(".js-notifications-btn").text("Enable notifications on this device")
+
+  unless maintainState
+    App.isPushEnabled = false
 
 setupServiceWorker = (registration) ->
   console.log(registration)
@@ -71,8 +88,29 @@ subscribe = ->
         enableNotificationBtn()
 
 unsubscribe = ->
-  # TODO
-  console.log "unsubscribe"
+  navigator.serviceWorker.ready.then (serviceWorkerRegistration) ->
+    serviceWorkerRegistration.pushManager.getSubscription()
+    .then (subscription) ->
+      unless subscription?
+        disablePush()
+        enableNotificationBtn()
+        return
+
+      deleteSubscription(subscription)
+
+      subscription.unsubscribe()
+      .then ->
+        console.log "unsubscribe", subscription
+        disablePush()
+        enableNotificationBtn()
+      .catch (error) ->
+        deleteSubscription(subscription)
+
+        console.error("Unable to unsubscribe", error)
+        enableNotificationBtn()
+        disablePush(true)
+    .catch(console.error.bind console, "Unable to find subscription")
+
 
 App =
   isPushEnabled: false

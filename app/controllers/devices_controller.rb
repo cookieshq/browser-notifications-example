@@ -17,6 +17,16 @@ class DevicesController < ApplicationController
     end
   end
 
+  def destroy
+    device = @account.devices.find_by! endpoint: Base64.decode64(params[:id])
+
+    if device.destroy
+      head :no_content
+    else
+      render json: { errors: device.errors }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def device_params
