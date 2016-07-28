@@ -1,0 +1,6 @@
+<%= simple_form_for message, remote: true do |f| %>
+  <%= f.input :title %>
+  <%= f.input :body %>
+
+  <%= f.submit "Send message", class: "btn btn-primary", data: { disable_with: "Sending..." } %>
+<% end %>

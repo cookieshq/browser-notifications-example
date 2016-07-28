@@ -1,0 +1,8 @@
+<% message = @message.persisted? ? @account.messages.build : @message %>
+
+$("#new_message").replaceWith("<%= j render 'form', message: message %>");
+
+<% if @message.persisted? %>
+  $("<div/>").addClass("alert alert-info").text("Message sent!").prependTo("body");
+  $("html, body").animate({ scrollTop: 0 });
+<% end %>
