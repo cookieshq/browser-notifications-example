@@ -18,7 +18,7 @@ class HomeController < ApplicationController
   def service_worker
     filename = Rails.application.assets_manifest.assets["service-worker.js"]
 
-    send_file filename, disposition: "inline"
+    send_file Rails.root.join("public", "assets", filename).to_s, disposition: "inline"
   end
 
   private
