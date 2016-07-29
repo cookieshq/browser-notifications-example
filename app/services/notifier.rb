@@ -19,6 +19,7 @@ class Notifier
       endpoint: device.endpoint,
       p256dh: device.p256dh,
       auth: device.auth,
+      cert_store: OpenSSL::X509::Store.new.tap(&:set_default_paths),
       message: message_json,
       api_key: Rails.application.secrets.gcm_key
     )
