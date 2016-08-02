@@ -2,3 +2,15 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.message {
+  padding: $padding-large-vertical;
+
+  &.is-warn {
+    color: $gray;
+  }
+
+  &.is-error {
+    color: $brand-danger;
+  }
+}

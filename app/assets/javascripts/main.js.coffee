@@ -1,15 +1,26 @@
+logToConsoleAndScreen = (level, message, args...) ->
+  console[level](message, args...)
+
+  $ ->
+    $container = $("#errors-container").empty()
+    $("<div/>").addClass("message is-#{level}").text(message).prependTo($container)
+
+logger =
+  warn:  logToConsoleAndScreen.bind(window, "warn")
+  error: logToConsoleAndScreen.bind(window, "error")
+
 areNotificationsSupported = ->
-  unless "showNotification" of ServiceWorkerRegistration?.prototype
-    console.warn("Notifications aren't supported")
+  unless ServiceWorkerRegistration and "showNotification" of ServiceWorkerRegistration.prototype
+    logger.warn("Notifications aren't supported")
     return false
 
   if Notification?.permission is "denied"
-    console.warn("The user has blocked notifications")
+    logger.warn("Notifications are blocked on this device")
     return false
 
   # Check if push messaging is supported
   unless "PushManager" of window
-    console.warn("Push messaging isn't supported")
+    logger.warn("Push messaging isn't supported")
     return false
 
   true
@@ -18,7 +29,7 @@ processSubscription = (subscription) ->
   enableNotificationBtn()
 
   if subscription?
-    console.log subscription
+    console.log "Existing subscription found", subscription
     enablePush()
     saveSubscription(subscription)
 
@@ -35,9 +46,9 @@ saveSubscription = (subscription) ->
     contentType: "application/json"
     dataType: "json"
     data: JSON.stringify(device: deviceData)
-  .then(console.log.bind console)
+  .then(console.log.bind console, "Subscription saved")
   .then(refreshDeviceList)
-  .fail(console.warn.bind console)
+  .fail(logger.warn.bind window, "Error saving subscription")
 
 deleteSubscription = (subscription) ->
   endpoint = subscription.toJSON().endpoint
@@ -47,9 +58,9 @@ deleteSubscription = (subscription) ->
     method: "DELETE"
     contentType: "application/json"
     dataType: "json"
-  .then(console.log.bind console)
+  .then(console.log.bind console, "Subscription deleted")
   .then(refreshDeviceList)
-  .fail(console.warn.bind console)
+  .fail(logger.warn.bind window, "Error deleting subscription")
 
 enableNotificationBtn = ->
   $(".js-notifications-btn").prop("disabled", false)
@@ -68,13 +79,13 @@ refreshDeviceList = ->
   $("#devices-iframe").get(0)?.contentDocument?.location?.reload(true)
 
 setupServiceWorker = (registration) ->
-  console.log(registration)
+  console.log("Service worker registered", registration)
 
   return unless areNotificationsSupported()
 
   registration.pushManager.getSubscription()
     .then(processSubscription)
-    .catch(console.error.bind console, "Error checking subscription")
+    .catch(logger.error.bind window, "Error checking subscription")
 
 subscribe = ->
   navigator.serviceWorker.ready.then (serviceWorkerRegistration) ->
@@ -87,9 +98,9 @@ subscribe = ->
 
     .catch (error) ->
       if Notification?.permission is "denied"
-        console.warn("Permission for Notifications was denied")
+        logger.warn("Permission for Notifications was denied")
       else
-        console.error("Unable to subscribe to push", error)
+        logger.error("Unable to subscribe to push", error)
         enableNotificationBtn()
 
 unsubscribe = ->
@@ -105,16 +116,16 @@ unsubscribe = ->
 
       subscription.unsubscribe()
       .then ->
-        console.log "unsubscribe", subscription
+        console.log "Unsubscribed from notifications", subscription
         disablePush()
         enableNotificationBtn()
       .catch (error) ->
         deleteSubscription(subscription)
 
-        console.error("Unable to unsubscribe", error)
+        logger.error("Unable to unsubscribe", error)
         enableNotificationBtn()
         disablePush(true)
-    .catch(console.error.bind console, "Unable to find subscription")
+    .catch(logger.error.bind window, "Unable to find subscription")
 
 
 App =
@@ -130,6 +141,6 @@ $ ->
 if "serviceWorker" of navigator
   navigator.serviceWorker.register("/service-worker.js")
     .then(setupServiceWorker)
-    .catch(console.error.bind console, "Unable to register Service Worker")
+    .catch(logger.error.bind window, "Unable to register Service Worker")
 else
-  alert "Sorry, Service Workers are not supported by your browser. Try Chrome instead"
+  logger.warn "Sorry, Service Workers are not supported by your browser. Try Chrome instead"
