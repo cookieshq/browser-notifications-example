@@ -1,6 +1,10 @@
 # Browser-notifications-example
 
-## Getting Started
+This is an example app to accompany our [blog post] on browser notifications.
+
+[blog post]: http://cookieshq.co.uk/posts/service-workers-and-browser-push-notifications/
+
+## Setting up your own copy
 
 After you have cloned this repo, run this setup script to set up your machine
 with the necessary dependencies to run and test this app:
@@ -17,20 +21,3 @@ After setting up, you can run the application using [Heroku Local]:
     % heroku local
 
 [Heroku Local]: https://devcenter.heroku.com/articles/heroku-local
-
-## Guidelines
-
-Use the following guides for getting things done, programming well, and
-programming in style.
-
-* [Protocol](http://github.com/thoughtbot/guides/blob/master/protocol)
-* [Best Practices](http://github.com/thoughtbot/guides/blob/master/best-practices)
-* [Style](http://github.com/thoughtbot/guides/blob/master/style)
-
-## Deploying
-
-If you have previously run the `./bin/setup` script,
-you can deploy to staging and production with:
-
-    $ ./bin/deploy staging
-    $ ./bin/deploy production
